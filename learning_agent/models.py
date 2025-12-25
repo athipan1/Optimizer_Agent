@@ -67,3 +67,36 @@ class LearningResponse(BaseModel):
     confidence_score: float = 0.0
     policy_deltas: PolicyDeltas = Field(default_factory=PolicyDeltas)
     reasoning: List[str] = Field(default_factory=list)
+
+# --- Market Regime Analysis Models ---
+
+class IndicatorSettings(BaseModel):
+    """Indicator settings for market regime analysis."""
+    ema_fast: int
+    ema_slow: int
+    adx_period: int
+    atr_period: int
+    rsi_period: int
+
+class MarketRegimeInput(BaseModel):
+    """The input data structure for the /market-regime endpoint."""
+    symbol: str
+    timeframe: str
+    price_history: List[PricePoint]
+    indicators: IndicatorSettings
+
+class LearnedPatterns(BaseModel):
+    """Learned patterns from the market regime analysis."""
+    trend_character: Optional[str] = None
+    false_breakout_risk: Optional[str] = None
+    best_strategy_fit: List[str] = Field(default_factory=list)
+
+class MarketRegimeOutput(BaseModel):
+    """The output data structure for the /market-regime endpoint."""
+    learning_state: str = "success"
+    market_regime: Optional[str] = None
+    confidence: float
+    explanation: List[str] = Field(default_factory=list)
+    learned_patterns: Optional[LearnedPatterns] = None
+    risk_notes: List[str] = Field(default_factory=list)
+    reasoning: List[str] = Field(default_factory=list)
