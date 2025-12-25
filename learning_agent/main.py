@@ -1,7 +1,8 @@
 
 from fastapi import FastAPI
-from .models import LearningRequest, LearningResponse
+from .models import LearningRequest, LearningResponse, MarketRegimeInput, MarketRegimeOutput
 from .logic import run_learning_cycle
+from .regime_logic import run_regime_analysis
 
 app = FastAPI(
     title="Macro Learning Agent",
@@ -24,3 +25,10 @@ async def learn(request: LearningRequest) -> LearningResponse:
 
     # 2. Run the full learning cycle
     return run_learning_cycle(request)
+
+@app.post("/market-regime", response_model=MarketRegimeOutput)
+async def market_regime(request: MarketRegimeInput) -> MarketRegimeOutput:
+    """
+    Analyzes price history to determine the current market regime.
+    """
+    return run_regime_analysis(request)
