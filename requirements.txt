@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-pytest
+pydantic
 pandas
 pandas-ta
-pydantic
+numpy
